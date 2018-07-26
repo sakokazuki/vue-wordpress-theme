@@ -6,10 +6,10 @@ docker + gulp.js
 ## init
 
 ### yarn
-yarn install
+`yarn install`
 
 ### create docker envfile
-touch server/.env
+`touch server/.env`
 
 example
 ```
@@ -25,14 +25,14 @@ WORDPRESS_DB_PASSWORD=wordpress
 ### 
 
 ## command
-yarn dev: docker起動してgulpも起動する  
-yarn down: docker-compose down  
-yarn up: docker-compose up  
-yarn restart: docker落として yarn dev  
-yarn build: テーマファイルだけビルドする    
+`yarn dev`: docker起動してgulpも起動する  
+`yarn down`: docker-compose down  
+`yarn up`: docker-compose up  
+`yarn restart`: docker落として yarn dev  
+`yarn build`: テーマファイルだけビルドする    
 
 ## 開発方針
-- ininspired [VueTheme](https://github.com/rtCamp/VueTheme)
+- ininspired by [VueTheme](https://github.com/rtCamp/VueTheme)
 - マークアップは必要に応じてphpを使いながら(pugでinlineでべた書きする)する。
 - マークアップした要素はz-index, display:none等で隠す。
 - #app以下にvue,vuex,vue-routerでいつもどおりサイトを作る。
