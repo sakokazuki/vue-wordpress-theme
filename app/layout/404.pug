@@ -1,0 +1,33 @@
+extends ./partials/head
+
+block head
+  title="404 not found"
+  meta(name="description" content="description")
+  meta(name="keywords" content="keywords")
+
+block og
+  meta(property="og:type" content="website")
+  meta(property="og:title",content="トップページのタイトル")
+  meta(property="og:description",content="トップページのディスクリプション")
+  meta(property="og:site_name",content="sitename")
+  .
+    <meta property="og:url", content="<?php bloginfo('url'); ?>"></mata>
+    <meta property="og:image", content="<?php bloginfo('template_url'); ?>/assets/og.png"></mata>
+  meta(property="og:locale",content="ja_JP")
+  meta(name="twitter:card" content="summary_large_image")
+
+
+block style
+  link(rel="stylesheet" type="text/css" href!=`<?php bloginfo('template_url'); ?>/assets/styles/main.css`)
+
+block content
+  h1 404 not found
+  h2=`wordpress-vue template env: ${ENV.env}`
+
+
+
+
+
+
+
+

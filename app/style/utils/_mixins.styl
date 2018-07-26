@@ -1,0 +1,60 @@
+center(){
+  position: absolute;
+  margin auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+center-child(){
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+object-fit(fit = cover, position = center){
+  -o-object-fit: fit;
+  object-fit: fit;
+  -o-object-position: position;
+  object-position: position;
+  font-family: 'object-fit: '+fit+'; object-position: ' + position;
+}
+
+
+clearfix(){
+  &::after{
+    content: "";
+    clear: both;
+    display: block;
+  }
+}
+
+hover(){
+  cursor: pointer;
+  .hover{
+    opacity: 0;
+  }
+  img{
+    transition: opacity 0.1s ease-in;
+  }
+  &:hover{
+    img{
+      opacity: 0;
+    }
+    .hover, .label{
+      opacity: 1;
+    }
+  }
+}
+
+
+
+sp-sprite($sprite) {
+  width: ($sprite[4]/2);
+  height: ($sprite[5]/2);
+  background-position: ($sprite[2]/2) ($sprite[3]/2);
+  background-image: url($sprite[8]);
+  background-size: ($sprite[6]/2) ($sprite[7]/2)
+}
+

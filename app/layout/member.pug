@@ -1,0 +1,52 @@
+extends ./partials/head
+
+block head
+  title="メンバーページ"
+  meta(name="description" content="description")
+  meta(name="keywords" content="keywords")
+
+block og
+  meta(property="og:type" content="website")
+  meta(property="og:title",content="メンバーページ")
+  meta(property="og:description",content="メンバーページのディスクリプション")
+  meta(property="og:site_name",content="sitename")
+  .
+    <meta property="og:url", content="<?php bloginfo('url'); ?>/member"></mata>
+    <meta property="og:image", content="<?php bloginfo('template_url'); ?>/assets/og.png"></mata>
+  meta(property="og:locale",content="ja_JP")
+  meta(name="twitter:card" content="summary_large_image")
+
+block style
+  link(rel="stylesheet" type="text/css" href!=`<?php bloginfo('template_url'); ?>/assets/styles/main.css`)
+
+block wpTemplate
+  .
+    <?php
+      /*
+      Template Name: member
+      */
+    ?>
+
+block content
+
+  h1 メンバー
+  .
+    <?php setup_postdata($post); ?>
+    <?php the_content(); ?>
+    <?php $names = get_post_meta($post->ID, 'name', false)?>
+    <?php $descriptions = get_post_meta($post->ID, 'description', false)?>
+    <?php $i = 0 ?>
+
+    <ul class="members">
+    <?php foreach ( $names as $name ):?>
+      <li>
+      <div class="name"><?php echo($names[$i]) ?></div>
+      <div class="description"><?php echo($descriptions[$i]) ?></div>
+      </li>
+      <?php $i+=1; ?>
+    <?php endforeach; ?>
+    </ul>
+
+
+
+

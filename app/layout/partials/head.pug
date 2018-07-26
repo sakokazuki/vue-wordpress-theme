@@ -1,0 +1,35 @@
+doctype html
+html(lang="ja")
+  head
+    include ./meta
+    include ./mixins
+
+
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    .
+      <link rel="shortcut icon" href="<?php bloginfo('template_url'); ?>/assets/favicon.ico">
+    block head
+
+
+    meta#viewport(name="viewport", content="width=device-width, initial-scale=1")
+    include ./ga
+
+    block og
+
+
+
+    block style
+
+    .
+      <?php wp_head(); ?>
+
+
+  body(ontouchstart="")
+    block wpTemplate
+    .wp-content
+      block content
+    #app
+    block script
+    .
+      <?php wp_footer(); ?>
