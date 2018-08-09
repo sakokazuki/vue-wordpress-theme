@@ -19,7 +19,7 @@ html(lang="ja")
 
 
 
-    block style
+    link(rel="stylesheet" type="text/css" href!=`<?php bloginfo('template_url'); ?>/assets/styles/main.css`)
 
     .
       <?php wp_head(); ?>

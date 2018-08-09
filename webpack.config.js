@@ -59,7 +59,7 @@ module.exports = {
     new webpack.LoaderOptionsPlugin({
       options: {
         stylus: {
-          import: [path.resolve(__dirname, 'app/style/main.styl')]
+          import: [path.resolve(__dirname, 'app/style/vueapp.styl')]
         }
       }
     })

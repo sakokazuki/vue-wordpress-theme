@@ -22,7 +22,6 @@ WORDPRESS_DB_USER=wordpress
 WORDPRESS_DB_PASSWORD=wordpress
 ```
 
-### 
 
 ## command
 `yarn dev`: docker起動してgulpも起動する  
