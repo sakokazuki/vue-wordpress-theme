@@ -68,7 +68,7 @@ module.exports = {
   },
   watch: true,
   watchOptions: {
-    poll: true,
+    poll: true, // for WSL
   },
   resolve: {
     modules: [
