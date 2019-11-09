@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const browserSync = require("browser-sync").create()
-const plumber     = require("gulp-plumber")
+const plumber = require("gulp-plumber")
 const runSequence = require('run-sequence')
 const fs = require("fs")
 const path = require("path");
@@ -14,7 +14,7 @@ const envfile = require("./env.js")
 let isBuild;
 let variables;
 let _buildPath;
-switch(process.env.NODE_ENV){
+switch (process.env.NODE_ENV) {
   case "release":
     variables = envfile.release;
     isBuild = true;
@@ -25,7 +25,7 @@ switch(process.env.NODE_ENV){
     variables = envfile.dev;
     isBuild = false;
     _buildPath = "server/themes/wp-vue-dev";
-  break;
+    break;
 }
 variables = Object.assign(envfile.common, variables);
 
@@ -50,7 +50,7 @@ gulp tasks
 //  dafault & Build
 //----------------
 
-gulp.task('default', (cb)=> {
+gulp.task('default', (cb) => {
   return runSequence(
     'rewriteThemeStyle',
     'copy',
@@ -63,7 +63,7 @@ gulp.task('default', (cb)=> {
   );
 });
 
-gulp.task('build', (cb)=> {
+gulp.task('build', (cb) => {
   return runSequence(
     'clean',
     'rewriteThemeStyle',
@@ -81,29 +81,29 @@ gulp.task('build', (cb)=> {
 //----------------
 //  Watch
 //----------------
-gulp.task("watch", ()=>{
+gulp.task("watch", () => {
   const watch = require("gulp-watch");
-  gulp.watch(path.join(LAYOUTPATH, "**/*.pug"), ()=>{
+  gulp.watch(path.join(LAYOUTPATH, "**/*.pug"), () => {
     runSequence('pug', 'reload');
   });
-  gulp.watch(path.join(STYLUSPATH,"**/*.styl"), ["stylus"])
+  gulp.watch(path.join(STYLUSPATH, "**/*.styl"), ["stylus"])
 
-  watch(path.join(ASSETSPATH, "**/*"), (event)=>{
+  watch(path.join(ASSETSPATH, "**/*"), (event) => {
     gulp.start("copy");
   });
 
   let spriteDirArr = [];
-  SPRITEPATHS.forEach((dir)=>{
+  SPRITEPATHS.forEach((dir) => {
     const arr = dir.split('/');
-    const name = arr[arr.length-1];
+    const name = arr[arr.length - 1];
     let soritepath = "";
-    for(var j=0; j<arr.length-1; j++){
-      soritepath += arr[j]+'/';
+    for (var j = 0; j < arr.length - 1; j++) {
+      soritepath += arr[j] + '/';
     }
     spriteDirArr.push(path.join(ASSETSPATH, soritepath, name, '*png'));
   });
   gulp.watch(spriteDirArr, ["sprite"]);
-  gulp.watch(path.join(JSPATH, "**/*.js"), ()=>{
+  gulp.watch(path.join(JSPATH, "**/*.js"), () => {
     browserSync.reload(path.join(BUILDPATH, "**/*.js"));
   })
 
@@ -113,17 +113,17 @@ gulp.task("watch", ()=>{
 //----------------
 //  BROWER
 //----------------
-gulp.task("browser-sync", ()=>{
+gulp.task("browser-sync", () => {
   browserSync.init({
     proxy: 'localhost:8000',
     scrollProportionally: false,
-    open: true,
+    open: false,
     port: PORT,
     ghostMode: false
   })
 })
 
-gulp.task("reload", ()=>{
+gulp.task("reload", () => {
   browserSync.reload();
 })
 
@@ -131,7 +131,7 @@ gulp.task("reload", ()=>{
 //----------------
 //  LAYOUT
 //----------------
-const pugReComplie = (v)=>{
+const pugReComplie = (v) => {
   const userPugPath = v.path;
   const projectPath = process.cwd();
   const pugPath = path.relative(projectPath, userPugPath);
@@ -139,11 +139,11 @@ const pugReComplie = (v)=>{
   const destPath = path.join(HTMLPATH, destfileName);
   const pug = require('pug');
 
-  try{
+  try {
     fs.statSync(pugPath)
     const data = getPugData(pugPath);
     const html = pug.compileFile(pugPath, {
-      locals:{},
+      locals: {},
       pretty: true,
       projectPath,
       compileDebug: true,
@@ -151,18 +151,18 @@ const pugReComplie = (v)=>{
     })(data);
 
     fs.writeFile(destPath, html, 'utf8', (err) => {
-      if(err){
+      if (err) {
         throw err
         return;
       }
       browserSync.reload();
     });
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }
 
-gulp.task("rewriteThemeStyle", (cb)=>{
+gulp.task("rewriteThemeStyle", (cb) => {
   const filename = path.join(ASSETSPATH, 'style.css');
   const themename = process.env.NODE_ENV === 'dev' ? 'wp-vue-dev' : 'wp-vue'
   const data = `/*
@@ -172,40 +172,40 @@ gulp.task("rewriteThemeStyle", (cb)=>{
   */
   `
 
-  fs.writeFile(filename, data, (err)=>{
+  fs.writeFile(filename, data, (err) => {
     cb();
 
   })
 
 })
 
-const getPugData = (filepath)=>{
+const getPugData = (filepath) => {
   filepath = path.resolve(filepath, '../');
   const layoutRoot = path.join(__dirname, LAYOUTPATH);
   let rootpath = path.relative(filepath, layoutRoot);
-  if(rootpath == '') rootpath = '.';
-  return {ENV: variables, ROOTPATH: rootpath};
+  if (rootpath == '') rootpath = '.';
+  return { ENV: variables, ROOTPATH: rootpath };
 }
 
-gulp.task("pug", ()=>{
+gulp.task("pug", () => {
   const pug = require("gulp-pug")
-  const rename  = require('gulp-rename')
+  const rename = require('gulp-rename')
   const data = require("gulp-data")
 
   return gulp.src([
-      path.join(LAYOUTPATH, "**/*.pug"),
-      "!"+path.join(LAYOUTPATH, "partials/**/*.pug")
-    ])
+    path.join(LAYOUTPATH, "**/*.pug"),
+    "!" + path.join(LAYOUTPATH, "partials/**/*.pug")
+  ])
     .pipe(plumber())
-    .pipe(data((file)=> {
+    .pipe(data((file) => {
       return getPugData(file.path);
     }))
     .pipe(pug({
       pretty: !isBuild
     }))
-    .pipe( rename({
+    .pipe(rename({
       extname: '.php'
-    }) )
+    }))
     .pipe(gulp.dest(HTMLPATH))
 })
 
@@ -213,7 +213,7 @@ gulp.task("pug", ()=>{
 //----------------
 //  webpack
 //----------------
-gulp.task('webpack', (cb)=>{
+gulp.task('webpack', (cb) => {
   const webpackStream = require("webpack-stream");
   const webpack = require("webpack");
   const webpackConfig = require("./webpack.config");
@@ -223,8 +223,7 @@ gulp.task('webpack', (cb)=>{
   webpackConfig.plugins[0] = new webpack.DefinePlugin({
     ENV: JSON.stringify(variables)
   })
-
-  if(isBuild == false){
+  if (isBuild == false) {
     cb();
   }
   return gulp.src('')
@@ -236,9 +235,9 @@ gulp.task('webpack', (cb)=>{
 //----------------
 // CSS
 //----------------
-gulp.task("stylus", ()=>{
+gulp.task("stylus", () => {
   const stylus = require("gulp-stylus")
-  const sourcemaps  = require('gulp-sourcemaps');
+  const sourcemaps = require('gulp-sourcemaps');
   const autoprefixer = require('gulp-autoprefixer')
   return gulp.src(path.join(STYLUSPATH, "/**/!(_)*.styl"))
     .pipe(plumber())
@@ -247,7 +246,7 @@ gulp.task("stylus", ()=>{
     .pipe(autoprefixer({
       browsers: ['last 2 version', 'iOS >= 8.1', 'Android >= 4.4'],
       cascade: false
-     }))
+    }))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(CSSPATH))
     .pipe(browserSync.stream())
@@ -256,19 +255,19 @@ gulp.task("stylus", ()=>{
 //----------------
 //  MINIFY
 //----------------
-gulp.task("minify", ()=>{
+gulp.task("minify", () => {
   var uglify = require('gulp-uglify-es').default;
   var cleanCSS = require('gulp-clean-css');
   var mergeSteram = require('merge-stream');
 
-  const js = gulp.src(BUILDPATH+"**/*.js")
+  const js = gulp.src(BUILDPATH + "**/*.js")
     .pipe(uglify())
-    .on('error', (e)=>{
+    .on('error', (e) => {
       console.log(e);
     })
     .pipe(gulp.dest(BUILDPATH));
 
-  const css = gulp.src(BUILDPATH+"**/*.css")
+  const css = gulp.src(BUILDPATH + "**/*.css")
     .pipe(cleanCSS())
     .pipe(gulp.dest(BUILDPATH));
 
@@ -279,9 +278,9 @@ gulp.task("minify", ()=>{
 //----------------
 //  CLEAN
 //----------------
-gulp.task("clean", ()=>{
+gulp.task("clean", () => {
   const del = require("del");
-  return del([BUILDPATH]).then(e=>{
+  return del([BUILDPATH]).then(e => {
 
   });
 });
@@ -289,7 +288,7 @@ gulp.task("clean", ()=>{
 //----------------
 //  COPY
 //----------------
-gulp.task("copy", ()=>{
+gulp.task("copy", () => {
   //一度対象フォルダ内を空にしてからコピーし直す。
   const fs = require('fs');
   const dirname = ASSETSPATH;
@@ -297,15 +296,15 @@ gulp.task("copy", ()=>{
   const del = require('del');
   const cpx = require('cpx');
   let arr = [];
-  files.forEach((filename)=>{
-    if(filename == 'js') return;
-    arr.push(BUILDPATH+filename+"/");
+  files.forEach((filename) => {
+    if (filename == 'js') return;
+    arr.push(BUILDPATH + filename + "/");
   });
   // console.log(arr);
 
   const destPath = path.join(ASSETSPATH, "**/*");
-  del(arr).then(e=>{
-    return cpx.copy(destPath, BUILDPATH, ()=>{
+  del(arr).then(e => {
+    return cpx.copy(destPath, BUILDPATH, () => {
       browserSync.reload(destPath);
     });
   });
@@ -315,7 +314,7 @@ gulp.task("copy", ()=>{
 //----------------
 //  IMAGEMIN
 //----------------
-gulp.task('imagemin', ()=>{
+gulp.task('imagemin', () => {
   var imagemin = require("gulp-imagemin");
   var pngquant = require("imagemin-pngquant");
   var mozjpeg = require('imagemin-mozjpeg');
@@ -323,21 +322,21 @@ gulp.task('imagemin', ()=>{
   return gulp.src(path.join(BUILDPATH, '**/*'))
     .pipe(plumber())
     .pipe(imagemin([
-       pngquant({
-         quality: '80-90',
-         speed: 1,
-         floyd:0
-       }),
-       mozjpeg({
-         quality:85,
-         progressive: true
-       }),
-       // imagemin.svgo({
-       //  plugins: [{mergePaths: false}]
-       // }),
-       imagemin.optipng(),
-       imagemin.gifsicle()
-     ]
+      pngquant({
+        quality: '80-90',
+        speed: 1,
+        floyd: 0
+      }),
+      mozjpeg({
+        quality: 85,
+        progressive: true
+      }),
+      // imagemin.svgo({
+      //  plugins: [{mergePaths: false}]
+      // }),
+      imagemin.optipng(),
+      imagemin.gifsicle()
+    ]
     ))
     .pipe(gulp.dest(BUILDPATH));
 });

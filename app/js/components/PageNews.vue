@@ -12,33 +12,34 @@
 </template>
 
 <script>
-
 export default {
-  props:{},
+  props: {},
   components: {},
-  computed: {
-  },
+  computed: {},
   methods: {},
-  created () {
-    if(!this.pageData){
-      this.$http.get('wp/v2/news',{
-        params: {per_page:5}
-      }).then((res)=>{
-        this.pageData = res.data;
-　    })
+  created() {
+    if (!this.pageData) {
+      this.$http
+        .get("wp/v2/news", {
+          params: { per_page: 5 }
+        })
+        .then(res => {
+          this.pageData = res.data;
+        });
     }
   },
-  mounted () {},
-  data () {
+  mounted() {},
+  data() {
     return {
       pageData: null
-    }
-  },
-}
+    };
+  }
+};
 </script>
 
 <style lang="stylus" scoped>
-a
-  color blue
+a {
+  color: blue;
+}
 </style>
 

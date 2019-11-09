@@ -2,16 +2,15 @@ const webpack = require("webpack")
 const path = require("path")
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
-
 module.exports = {
-  context: __dirname + '/app/',
+  context: path.join(__dirname + '/app'),
   mode: 'development',
   entry: {
-    'app': ['babel-polyfill','./js/app'],
+    'app': ['./js/app'],
   },
   output: {
     filename: '[name].js',
-    path: __dirname + '/build/js',
+    path: path.join(__dirname + '/build/js'),
   },
   module: {
     rules: [
@@ -42,8 +41,8 @@ module.exports = {
         ]
       },
       {
-       test: /\.(glsl|frag|vert)$/,
-       use: 'shader-loader',
+        test: /\.(glsl|frag|vert)$/,
+        use: 'shader-loader',
       },
       {
         test: /\.(svg)$/,
@@ -53,7 +52,7 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      ROOT_DIR: JSON.stringify("from gulp file"),
+      ROOT_DIR: JSON.stringify("re write gulp file"),
     }),
     new VueLoaderPlugin(),
     new webpack.LoaderOptionsPlugin({
@@ -68,11 +67,16 @@ module.exports = {
     hints: false
   },
   watch: true,
+  watchOptions: {
+    poll: true,
+  },
   resolve: {
     modules: [
       path.resolve(__dirname, "./app/js"),
       "node_modules"
-    ]
+    ],
+    extensions: ['*', '.js', '.vue', '.json']
+
   },
   devtool: 'inline-source-map'
 

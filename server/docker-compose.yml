@@ -4,7 +4,7 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - db_data:/var/lib/mysql
+      - dev_db_data:/var/lib/mysql
     restart: always
     env_file:
       - .env
@@ -22,9 +22,10 @@ services:
     env_file:
       - .env
     volumes:
+      - ./uploads:/var/www/html/wp-content/uploads
       - ./themes:/var/www/html/wp-content/themes
-      - ./plugins/advanced-custom-fields:/var/www/html/wp-content/plugins/advanced-custom-fields
       - ./plugins/custom-post-type-ui:/var/www/html/wp-content/plugins/custom-post-type-ui
       - ./plugins/custom-field-suite:/var/www/html/wp-content/plugins/custom-field-suite
+      - ./plugins/custom-post-type-permalinks:/var/www/html/wp-content/plugins/custom-post-type-permalinks
 volumes:
-  db_data:
+  dev_db_data:

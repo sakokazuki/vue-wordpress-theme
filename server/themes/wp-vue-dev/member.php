@@ -31,6 +31,7 @@
       <?php the_content(); ?>
       <?php $names = get_post_meta($post->ID, 'name', false)?>
       <?php $descriptions = get_post_meta($post->ID, 'description', false)?>
+      <?php $descriptions = get_post_meta($post->ID, 'description', false)?>
       <?php $i = 0 ?>
       
       <ul class="members">

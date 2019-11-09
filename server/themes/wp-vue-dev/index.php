@@ -21,7 +21,7 @@
   </head>
   <body ontouchstart="">
     <div class="wp-content">
-      <h1>topページです</h1>
+      <h1>topページですyo</h1>
       <h2>wordpress-vue template env: dev</h2>
     </div>
     <div id="app"></div><?php wp_footer(); ?>

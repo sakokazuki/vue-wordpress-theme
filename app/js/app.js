@@ -18,7 +18,7 @@ Vue.prototype.$http = http;
 
 // setup global mixin
 const wp_data = {
-  data: ()=>{
+  data: () => {
     return {
       base_url: _WP.base_url
     }
