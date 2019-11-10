@@ -6,7 +6,7 @@ module.exports = {
   context: path.join(__dirname + '/app'),
   mode: 'development',
   entry: {
-    'app': ['./js/app'],
+    'app': ['@babel/polyfill', './js/app'],
   },
   output: {
     filename: '[name].js',
@@ -23,9 +23,6 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['es2015', "stage-3"]
-          }
         }
       },
       {

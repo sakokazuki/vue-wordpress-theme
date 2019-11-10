@@ -51,6 +51,7 @@ gulp tasks
 //----------------
 
 gulp.task('default', (cb) => {
+
   return runSequence(
     'rewriteThemeStyle',
     'copy',
@@ -243,10 +244,7 @@ gulp.task("stylus", () => {
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(stylus())
-    .pipe(autoprefixer({
-      browsers: ['last 2 version', 'iOS >= 8.1', 'Android >= 4.4'],
-      cascade: false
-    }))
+    .pipe(autoprefixer())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(CSSPATH))
     .pipe(browserSync.stream())
