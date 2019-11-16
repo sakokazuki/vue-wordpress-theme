@@ -29,6 +29,7 @@ switch (process.env.NODE_ENV) {
 }
 variables = Object.assign(envfile.common, variables);
 
+const WP_PORT = 9000;
 const PORT = 8888;
 const SOURCEPATH = path.join('', 'app');
 const LAYOUTPATH = path.join(SOURCEPATH, 'layout');
@@ -116,7 +117,7 @@ gulp.task("watch", () => {
 //----------------
 gulp.task("browser-sync", () => {
   browserSync.init({
-    proxy: 'localhost:8000',
+    proxy: `localhost:${WP_PORT}`,
     scrollProportionally: false,
     open: false,
     port: PORT,
